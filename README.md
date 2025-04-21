@@ -16,24 +16,24 @@ ou baixar via [pyenv](https://github.com/pyenv/pyenv)
 
 - Criar o ambiente virtual
 ```bash
-$ python -m venv .venv
+python -m venv .venv
 ```
 - Ativar o ambiente virtual
 ```bash
-$ source .venv/bin/activate
+source .venv/bin/activate
 ```
 - Baixar as dependências do projeto
 ```bash
-$ pip install .
+pip install .
 ```
 #### Se voce tiver o [uv](https://docs.astral.sh/uv/) 
 - Basta rodar
 ```bash
-$ uv sync
+uv sync
 ```
 - Depois entrar no ambiente virtual
 ```bash
-$ source .venv/bin/activate
+source .venv/bin/activate
 ```
 </details>
 
@@ -45,8 +45,8 @@ $ source .venv/bin/activate
 - Como rodar:
 
 ```bash
-$ compilador --path
-# Ex: compilador tests/files/input/test1.la
+compilador --path
 ```
+> Ex: $ compilador tests/files/input/test1.la
 - O output será gerado no diretório `tests/files/output/`
 </details>
