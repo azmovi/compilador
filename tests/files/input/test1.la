@@ -11,5 +11,6 @@ algoritmo
 
 	{ saída da mensagem na tela }
 	escreva(nome, " tem ", idade, " anos.")
+    escreva(10 * 12)
 fim_algoritmo
 
