@@ -1,4 +1,3 @@
 from pathlib import Path
-PATH = Path(__file__).resolve().parent.parent
 
-UNIQUETOKENS = {':', '*', '/', '+', '-', '(', ')', '[', ']', ','}
+PATH = Path(__file__).resolve().parent.parent

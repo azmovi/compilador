@@ -1,22 +1,20 @@
-from os import listdir
 from cyclopts import App
 from rich.console import Console
 
-from .exceptions import InvalidPath, InvalidFile
-from .utils import get_file, get_path
+from compilador.file_reader import get_file_path
+from compilador.lexical import create_lexical
 
+from .exceptions import InvalidPath
 
 console = Console()
 app = App(console=console)
 
+
 @app.default
-def main(input_path: str):
+def main(input_file: str, output_file: str):
+    """Cli para o analisador léxico"""
     try:
-        path = get_path(input_path)
-        for file_name in listdir(path):
-            file = get_file(path, file_name)
-            token_list = get_tokens(file)
-
-    except (InvalidPath, InvalidFile):
+        input_file_path, output_file_path = get_file_path(input_file, output_file)
+        return create_lexical(input_file_path, output_file_path)
+    except InvalidPath:
         console.print_exception()
-

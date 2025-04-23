@@ -80,5 +80,5 @@ IDENT : [a-zA-Z_][a-zA-Z_0-9]*;
 
 COMENTARIO_FECHADO : '{' ~('\n' | '\r' | '}')+ '}' -> skip;
 COMENTARIO_NAO_FECHADO : '{' ~('}')+;
-WS : [ \t\r\n]+ -> skip;
+WS : [ \t\r\n ]+ -> skip;
 ERR : . ;

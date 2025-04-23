@@ -1,81 +1,37 @@
 from dataclasses import dataclass
-from enum import Enum
 
-class TipoToken(Enum):
-    pass
+from antlr4 import Token
 
-class TokenIndependente(TipoToken):
-    DOIS_PONTOS = ':'
-    ABREPAR = '('
-    FECHAPAR = ')'
-    ABRECOL = '['
-    FECHACOL = ']'
-    VIRGULA = ','
-    PONTO = '.'
-    MAIS = '+'
-    MENOS = '-'
-    MULTIPLICACAO = '*'
-    DIVISAO = '/'
-    MOD = '%'
+from compilador.parser.LangAlg import LangAlg
 
-class TokenReservado(TipoToken):
-    ALGORITMO = 'algoritmo'
-    FIM_ALGORITMO = 'fim_algoritmo'
-    DECLARE = 'declare'
-    TIPO = 'tipo'
-    VAR = 'var'
-    CONSTANTE = 'constante'
-    REGISTRO = 'registro'
-    FIM_REGISTRO = 'fim_registro'
-    INTEIRO = 'inteiro'
-    REAL = 'real'
-    LITERAL = 'literal'
-    LOGICO = 'logico'
-    FALSO = 'falso'
-    VERDADEIRO = 'verdadeiro'
-    E = 'e'
-    OU = 'ou'
-    NAO = 'nao'
-    SE = 'se'
-    SENAO = 'senao'
-    ENTAO = 'entao'
-    FIM_SE = 'fim_se'
-    CASO = 'caso'
-    SEJA = 'seja'
-    FIM_CASO = 'fim_caso'
-    ENQUANTO = 'enquanto'
-    FIM_ENQUANTO = 'fim_enquanto'
-    PARA = 'para'
-    FIM_PARA = 'fim_para'
-    FACA = 'faca'
-    ATE = 'ate'
-    PROCEDIMENTO = 'procedimento'
-    FIM_PROCEDIMENTO = 'fim_procedimento'
-    FUNCAO = 'funcao'
-    FIM_FUNCAO = 'fim_funcao'
-    RETORNE = 'retorne'
-    LEIA = 'leia'
-    ESCREVA = 'escreva'
-
-class TokenRelacional(TipoToken):
-    pass
-
-class TokenComparativo(TipoToken):
-    IGUAL = '='
-    DIFERENCA = '<>'
-    MAIOR = '>'
-    MENOR = '<'
-    MAIOR_IGUAL = '>='
-    MENOR_IGUAL = '<='
-
-
-TOKEN_INDEPENDENTE = {token.value: token for token in TokenIndependente}
-TOKEN_COMPARATIVO = {token.value: token for token in TokenComparativo}
 
 @dataclass
-class Token:
-    tipo: TipoToken
-    lexema: str
+class MyToken:
+    pass
+
+
+@dataclass
+class ValidToken(MyToken):
+    tipo: Token
+    text: str
 
     def __repr__(self) -> str:
-        return f'<{repr(self.tipo.value)}, {repr(self.lexema)}>'
+        try:
+            tipo_exp = LangAlg.literalNames[self.tipo]
+        except IndexError:
+            tipo_exp = LangAlg.symbolicNames[self.tipo]
+
+        return f'<{repr(self.text)},{tipo_exp}>'
+
+
+@dataclass
+class ErrorToken(MyToken):
+    linha: int
+    error_msg: str
+    text: str
+
+    def __repr__(self) -> str:
+        if self.error_msg == '- simbolo nao identificado':
+            return f'Linha {self.linha}: {self.text} - {self.error_msg}'
+        else:
+            return f'Linha {self.linha}: {self.error_msg}'
