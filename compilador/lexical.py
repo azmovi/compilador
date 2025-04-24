@@ -20,27 +20,27 @@ def create_output_file(output_path: str, token_list: list[MyToken]):
 
 
 def get_token_list(file_content: str) -> list[MyToken]:
-    """Pega o conteúdo do arquivo e retorna uma lista de tokens"""
+    """Analisa o conteúdo de um arquivo fonte e retorna uma lista de tokens."""
     input_stream = InputStream(file_content)
     tokens = LangAlg(input_stream)
-    token = tokens.nextToken()
     token_list = []
-    while token.type != Token.EOF:
+
+    while (token := tokens.nextToken()).type != Token.EOF:
         if error_msg := is_invalid_token(token):
             my_token = ErrorToken(token.line, error_msg, token.text)
         else:
             my_token = ValidToken(token.type, token.text)
 
         token_list.append(my_token)
+
         if isinstance(my_token, ErrorToken):
             return token_list
 
-        token = tokens.nextToken()
     return token_list
 
 
 def is_invalid_token(token) -> str | None:
-    """Verifica os três erros possíveis"""
+    """Verifica os três erros possíveis do léxico"""
     erros = {
         'COMENTARIO_NAO_FECHADO': 'comentario nao fechado',
         'CADEIA_NAO_FECHADA': 'cadeia literal nao fechada',
