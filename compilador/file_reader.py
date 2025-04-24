@@ -6,10 +6,10 @@ from compilador.exceptions import InvalidPath
 
 def get_file_path(input_file: str, output_file: str) -> tuple[str, str]:
     """Pegar o path completo do arquivo de input e output"""
-    input = f'{PATH}/{input_file}'
-    output = f'{PATH}/{output_file}'
+    input = f'{input_file}'
+    output = f'{output_file}'
     if not path.exists(input_file):
-        raise InvalidPath('wrong file path')
+        raise InvalidPath(f'wrong file path :{input_file}')
     return input, output
 
 

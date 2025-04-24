@@ -45,7 +45,7 @@ source .venv/bin/activate
 - Como rodar:
 
 ```bash
-compilador --input_path --output_path
+java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador" gcc compilador/temp compilador/casos-de-teste "811455, 802534, 811797" t1
 ```
 > Ex: $ compilador tests/files/input/test1.la
 - O output será gerado no diretório `tests/files/output/`
