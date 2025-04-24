@@ -31,7 +31,7 @@ class ErrorToken(MyToken):
     text: str
 
     def __repr__(self) -> str:
-        if self.error_msg == '- simbolo nao identificado':
-            return f'Linha {self.linha}: {self.text} - {self.error_msg}'
+        if self.error_msg == ' - simbolo nao identificado':
+            return f'Linha {self.linha}: {self.text}{self.error_msg}'
         else:
             return f'Linha {self.linha}: {self.error_msg}'

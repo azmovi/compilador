@@ -43,7 +43,11 @@ source .venv/bin/activate
 - Implementação de um analisador léxico para a linguagem LA.
 - Ele deve ler um programa-fonte e produzir uma lista de tokens identificados.
 - Como rodar:
-
+- Entra no ambiente virtual
+```bash
+source .venv/bin/activate
+```
+- Depois executa o comando corretor automático passando os respectivos diretórios
 ```bash
 java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador" gcc compilador/temp compilador/casos-de-teste "811455, 802534, 811797" t1
 ```

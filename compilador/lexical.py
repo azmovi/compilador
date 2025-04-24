@@ -15,7 +15,8 @@ def create_lexical(input_path: str, output_path: str):
 def create_output_file(output_path: str, token_list: list[MyToken]):
     """Cria e escreve no arquivo de output"""
     with open(output_path, 'w', encoding='utf-8') as f:
-        f.writelines(str(token) + '\n' for token in token_list)
+        for token in token_list:
+            f.write(str(token) + '\n')
 
 
 def get_token_list(file_content: str) -> list[MyToken]:
