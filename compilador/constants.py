@@ -1,3 +1,0 @@
-from pathlib import Path
-
-PATH = Path(__file__).resolve().parent.parent
