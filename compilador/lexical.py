@@ -5,11 +5,11 @@ from compilador.parser.LangAlg import LangAlg
 from compilador.schemas import ErrorToken, MyToken, ValidToken
 
 
-def create_lexical(input_path: str, output_path: str):
+def create_lexical(input_path: str) -> list[MyToken]:
     """Cria o arquivo de output do analisador léxico"""
     file_content = get_file_content(input_path)
-    token_list = get_token_list(file_content)
-    create_output_file(output_path, token_list)
+    tokens = get_tokens(file_content)
+    return create_token_list(tokens)
 
 
 def create_output_file(output_path: str, token_list: list[MyToken]):
@@ -18,11 +18,12 @@ def create_output_file(output_path: str, token_list: list[MyToken]):
         for token in token_list:
             f.write(str(token) + '\n')
 
-
-def get_token_list(file_content: str) -> list[MyToken]:
-    """Analisa o conteúdo de um arquivo fonte e retorna uma lista de tokens."""
+def get_tokens(file_content: str) -> LangAlg:
     input_stream = InputStream(file_content)
-    tokens = LangAlg(input_stream)
+    return LangAlg(input_stream)
+
+def create_token_list(tokens: LangAlg) -> list[MyToken]:
+    """Analisa o conteúdo de um arquivo fonte e retorna uma lista de tokens."""
     token_list = []
 
     while (token := tokens.nextToken()).type != Token.EOF:

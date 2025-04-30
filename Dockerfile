@@ -8,9 +8,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     openjdk-17-jre-headless \
     gcc 
 
-WORKDIR /app/compilador
 RUN pip install .
-WORKDIR /app
 
 CMD bash
 

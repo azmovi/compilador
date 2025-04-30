@@ -45,6 +45,7 @@ source = { editable = "." }
 dependencies = [
     { name = "antlr4-python3-runtime" },
     { name = "cyclopts" },
+    { name = "ipdb" },
 ]
 
 [package.dev-dependencies]
@@ -59,6 +60,7 @@ dev = [
 requires-dist = [
     { name = "antlr4-python3-runtime", specifier = ">=4.13.2" },
     { name = "cyclopts", specifier = ">=3.13.1" },
+    { name = "ipdb", specifier = ">=0.13.13" },
 ]
 
 [package.metadata.requires-dev]
