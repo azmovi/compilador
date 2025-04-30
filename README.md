@@ -42,15 +42,42 @@ source .venv/bin/activate
 
 - Implementação de um analisador léxico para a linguagem LA.
 - Ele deve ler um programa-fonte e produzir uma lista de tokens identificados.
-- Como rodar:
+#### Como rodar:
 - Entra no ambiente virtual
 ```bash
 source .venv/bin/activate
 ```
 - Depois executa o comando corretor automático passando os respectivos diretórios
 ```bash
-java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador" gcc compilador/temp compilador/casos-de-teste "811455, 802534, 811797" t1
+java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador lexical" gcc temp casos-de-teste "811455, 802534, 811797" t1
 ```
-> Ex: $ compilador tests/files/input/test1.la
-- O output será gerado no diretório `tests/files/output/`
+- O output será gerado no diretório `temp/`
+
+- Caso queria rodar o CLI normalmente basta rodar
+```bash
+compilador lexical <input_file> <output_file>
+```
+</details>
+
+
+<details>
+<summary><strong> Analisador Sintático </strong></summary>
+
+- Implementação de um analisador sintático para a linguagem LA.
+- Ele deve ler um programa-fonte e produzir uma mensagem caso encontre um erro
+#### Como rodar:
+- Entra no ambiente virtual
+```bash
+source .venv/bin/activate
+```
+- Depois executa o comando corretor automático passando os respectivos diretórios
+```bash
+java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador syntactical" gcc temp casos-de-teste "811455, 802534, 811797" t2
+```
+- O output será gerado no diretório `temp/`
+
+- Caso queria rodar o CLI normalmente basta rodar
+```bash
+compilador syntactical <input_file> <output_file>
+```
 </details>

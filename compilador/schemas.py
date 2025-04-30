@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from antlr4 import Token
 
-from compilador.parser.LangAlg import LangAlg
+from compilador.parser.LangAlgLexer import LangAlgLexer
 
 
 @dataclass
@@ -17,9 +17,9 @@ class ValidToken(MyToken):
 
     def __repr__(self) -> str:
         try:
-            tipo_exp = LangAlg.literalNames[self.tipo]
+            tipo_exp = LangAlgLexer.literalNames[self.tipo]
         except IndexError:
-            tipo_exp = LangAlg.symbolicNames[self.tipo]
+            tipo_exp = LangAlgLexer.ruleNames[self.tipo]
 
         return f'<{repr(self.text)},{tipo_exp}>'
 

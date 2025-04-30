@@ -1,4 +1,4 @@
-# Generated from ./LangAlg.g4 by ANTLR 4.13.2
+# Generated from LangAlg.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
     from .LangAlgParser import LangAlgParser
@@ -26,12 +26,48 @@ class LangAlgListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by LangAlgParser#declaracao_var.
-    def enterDeclaracao_var(self, ctx:LangAlgParser.Declaracao_varContext):
+    # Enter a parse tree produced by LangAlgParser#decl_local_global.
+    def enterDecl_local_global(self, ctx:LangAlgParser.Decl_local_globalContext):
         pass
 
-    # Exit a parse tree produced by LangAlgParser#declaracao_var.
-    def exitDeclaracao_var(self, ctx:LangAlgParser.Declaracao_varContext):
+    # Exit a parse tree produced by LangAlgParser#decl_local_global.
+    def exitDecl_local_global(self, ctx:LangAlgParser.Decl_local_globalContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#declaracao_local.
+    def enterDeclaracao_local(self, ctx:LangAlgParser.Declaracao_localContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#declaracao_local.
+    def exitDeclaracao_local(self, ctx:LangAlgParser.Declaracao_localContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#variavel.
+    def enterVariavel(self, ctx:LangAlgParser.VariavelContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#variavel.
+    def exitVariavel(self, ctx:LangAlgParser.VariavelContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#identificador.
+    def enterIdentificador(self, ctx:LangAlgParser.IdentificadorContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#identificador.
+    def exitIdentificador(self, ctx:LangAlgParser.IdentificadorContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#dimensao.
+    def enterDimensao(self, ctx:LangAlgParser.DimensaoContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#dimensao.
+    def exitDimensao(self, ctx:LangAlgParser.DimensaoContext):
         pass
 
 
@@ -44,147 +80,30 @@ class LangAlgListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by LangAlgParser#declaracao_const.
-    def enterDeclaracao_const(self, ctx:LangAlgParser.Declaracao_constContext):
+    # Enter a parse tree produced by LangAlgParser#tipo_basico.
+    def enterTipo_basico(self, ctx:LangAlgParser.Tipo_basicoContext):
         pass
 
-    # Exit a parse tree produced by LangAlgParser#declaracao_const.
-    def exitDeclaracao_const(self, ctx:LangAlgParser.Declaracao_constContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#declaracao_subrotina.
-    def enterDeclaracao_subrotina(self, ctx:LangAlgParser.Declaracao_subrotinaContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#declaracao_subrotina.
-    def exitDeclaracao_subrotina(self, ctx:LangAlgParser.Declaracao_subrotinaContext):
+    # Exit a parse tree produced by LangAlgParser#tipo_basico.
+    def exitTipo_basico(self, ctx:LangAlgParser.Tipo_basicoContext):
         pass
 
 
-    # Enter a parse tree produced by LangAlgParser#procedimento.
-    def enterProcedimento(self, ctx:LangAlgParser.ProcedimentoContext):
+    # Enter a parse tree produced by LangAlgParser#tipo_basico_ident.
+    def enterTipo_basico_ident(self, ctx:LangAlgParser.Tipo_basico_identContext):
         pass
 
-    # Exit a parse tree produced by LangAlgParser#procedimento.
-    def exitProcedimento(self, ctx:LangAlgParser.ProcedimentoContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#funcao.
-    def enterFuncao(self, ctx:LangAlgParser.FuncaoContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#funcao.
-    def exitFuncao(self, ctx:LangAlgParser.FuncaoContext):
+    # Exit a parse tree produced by LangAlgParser#tipo_basico_ident.
+    def exitTipo_basico_ident(self, ctx:LangAlgParser.Tipo_basico_identContext):
         pass
 
 
-    # Enter a parse tree produced by LangAlgParser#parametros.
-    def enterParametros(self, ctx:LangAlgParser.ParametrosContext):
+    # Enter a parse tree produced by LangAlgParser#tipo_estendido.
+    def enterTipo_estendido(self, ctx:LangAlgParser.Tipo_estendidoContext):
         pass
 
-    # Exit a parse tree produced by LangAlgParser#parametros.
-    def exitParametros(self, ctx:LangAlgParser.ParametrosContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#parametro.
-    def enterParametro(self, ctx:LangAlgParser.ParametroContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#parametro.
-    def exitParametro(self, ctx:LangAlgParser.ParametroContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#comandos.
-    def enterComandos(self, ctx:LangAlgParser.ComandosContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#comandos.
-    def exitComandos(self, ctx:LangAlgParser.ComandosContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#comando.
-    def enterComando(self, ctx:LangAlgParser.ComandoContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#comando.
-    def exitComando(self, ctx:LangAlgParser.ComandoContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#leitura.
-    def enterLeitura(self, ctx:LangAlgParser.LeituraContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#leitura.
-    def exitLeitura(self, ctx:LangAlgParser.LeituraContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#escrita.
-    def enterEscrita(self, ctx:LangAlgParser.EscritaContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#escrita.
-    def exitEscrita(self, ctx:LangAlgParser.EscritaContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#listaExpressao.
-    def enterListaExpressao(self, ctx:LangAlgParser.ListaExpressaoContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#listaExpressao.
-    def exitListaExpressao(self, ctx:LangAlgParser.ListaExpressaoContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#atribuicao.
-    def enterAtribuicao(self, ctx:LangAlgParser.AtribuicaoContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#atribuicao.
-    def exitAtribuicao(self, ctx:LangAlgParser.AtribuicaoContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#se.
-    def enterSe(self, ctx:LangAlgParser.SeContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#se.
-    def exitSe(self, ctx:LangAlgParser.SeContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#caso.
-    def enterCaso(self, ctx:LangAlgParser.CasoContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#caso.
-    def exitCaso(self, ctx:LangAlgParser.CasoContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#seletores.
-    def enterSeletores(self, ctx:LangAlgParser.SeletoresContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#seletores.
-    def exitSeletores(self, ctx:LangAlgParser.SeletoresContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#seletor.
-    def enterSeletor(self, ctx:LangAlgParser.SeletorContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#seletor.
-    def exitSeletor(self, ctx:LangAlgParser.SeletorContext):
+    # Exit a parse tree produced by LangAlgParser#tipo_estendido.
+    def exitTipo_estendido(self, ctx:LangAlgParser.Tipo_estendidoContext):
         pass
 
 
@@ -197,39 +116,291 @@ class LangAlgListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by LangAlgParser#enquanto.
-    def enterEnquanto(self, ctx:LangAlgParser.EnquantoContext):
+    # Enter a parse tree produced by LangAlgParser#registro.
+    def enterRegistro(self, ctx:LangAlgParser.RegistroContext):
         pass
 
-    # Exit a parse tree produced by LangAlgParser#enquanto.
-    def exitEnquanto(self, ctx:LangAlgParser.EnquantoContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#para.
-    def enterPara(self, ctx:LangAlgParser.ParaContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#para.
-    def exitPara(self, ctx:LangAlgParser.ParaContext):
+    # Exit a parse tree produced by LangAlgParser#registro.
+    def exitRegistro(self, ctx:LangAlgParser.RegistroContext):
         pass
 
 
-    # Enter a parse tree produced by LangAlgParser#chamadaProcedimento.
-    def enterChamadaProcedimento(self, ctx:LangAlgParser.ChamadaProcedimentoContext):
+    # Enter a parse tree produced by LangAlgParser#declaracao_global.
+    def enterDeclaracao_global(self, ctx:LangAlgParser.Declaracao_globalContext):
         pass
 
-    # Exit a parse tree produced by LangAlgParser#chamadaProcedimento.
-    def exitChamadaProcedimento(self, ctx:LangAlgParser.ChamadaProcedimentoContext):
+    # Exit a parse tree produced by LangAlgParser#declaracao_global.
+    def exitDeclaracao_global(self, ctx:LangAlgParser.Declaracao_globalContext):
         pass
 
 
-    # Enter a parse tree produced by LangAlgParser#retorne.
-    def enterRetorne(self, ctx:LangAlgParser.RetorneContext):
+    # Enter a parse tree produced by LangAlgParser#parametro.
+    def enterParametro(self, ctx:LangAlgParser.ParametroContext):
         pass
 
-    # Exit a parse tree produced by LangAlgParser#retorne.
-    def exitRetorne(self, ctx:LangAlgParser.RetorneContext):
+    # Exit a parse tree produced by LangAlgParser#parametro.
+    def exitParametro(self, ctx:LangAlgParser.ParametroContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#parametros.
+    def enterParametros(self, ctx:LangAlgParser.ParametrosContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#parametros.
+    def exitParametros(self, ctx:LangAlgParser.ParametrosContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#corpo.
+    def enterCorpo(self, ctx:LangAlgParser.CorpoContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#corpo.
+    def exitCorpo(self, ctx:LangAlgParser.CorpoContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmd.
+    def enterCmd(self, ctx:LangAlgParser.CmdContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmd.
+    def exitCmd(self, ctx:LangAlgParser.CmdContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdLeia.
+    def enterCmdLeia(self, ctx:LangAlgParser.CmdLeiaContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdLeia.
+    def exitCmdLeia(self, ctx:LangAlgParser.CmdLeiaContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdEscreva.
+    def enterCmdEscreva(self, ctx:LangAlgParser.CmdEscrevaContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdEscreva.
+    def exitCmdEscreva(self, ctx:LangAlgParser.CmdEscrevaContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdSe.
+    def enterCmdSe(self, ctx:LangAlgParser.CmdSeContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdSe.
+    def exitCmdSe(self, ctx:LangAlgParser.CmdSeContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdCaso.
+    def enterCmdCaso(self, ctx:LangAlgParser.CmdCasoContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdCaso.
+    def exitCmdCaso(self, ctx:LangAlgParser.CmdCasoContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdPara.
+    def enterCmdPara(self, ctx:LangAlgParser.CmdParaContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdPara.
+    def exitCmdPara(self, ctx:LangAlgParser.CmdParaContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdEnquanto.
+    def enterCmdEnquanto(self, ctx:LangAlgParser.CmdEnquantoContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdEnquanto.
+    def exitCmdEnquanto(self, ctx:LangAlgParser.CmdEnquantoContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdFaca.
+    def enterCmdFaca(self, ctx:LangAlgParser.CmdFacaContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdFaca.
+    def exitCmdFaca(self, ctx:LangAlgParser.CmdFacaContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdAtribuicao.
+    def enterCmdAtribuicao(self, ctx:LangAlgParser.CmdAtribuicaoContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdAtribuicao.
+    def exitCmdAtribuicao(self, ctx:LangAlgParser.CmdAtribuicaoContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdChamada.
+    def enterCmdChamada(self, ctx:LangAlgParser.CmdChamadaContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdChamada.
+    def exitCmdChamada(self, ctx:LangAlgParser.CmdChamadaContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#cmdRetorne.
+    def enterCmdRetorne(self, ctx:LangAlgParser.CmdRetorneContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#cmdRetorne.
+    def exitCmdRetorne(self, ctx:LangAlgParser.CmdRetorneContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#selecao.
+    def enterSelecao(self, ctx:LangAlgParser.SelecaoContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#selecao.
+    def exitSelecao(self, ctx:LangAlgParser.SelecaoContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#item_selecao.
+    def enterItem_selecao(self, ctx:LangAlgParser.Item_selecaoContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#item_selecao.
+    def exitItem_selecao(self, ctx:LangAlgParser.Item_selecaoContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#constantes.
+    def enterConstantes(self, ctx:LangAlgParser.ConstantesContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#constantes.
+    def exitConstantes(self, ctx:LangAlgParser.ConstantesContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#numero_intervalo.
+    def enterNumero_intervalo(self, ctx:LangAlgParser.Numero_intervaloContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#numero_intervalo.
+    def exitNumero_intervalo(self, ctx:LangAlgParser.Numero_intervaloContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#op_unario.
+    def enterOp_unario(self, ctx:LangAlgParser.Op_unarioContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#op_unario.
+    def exitOp_unario(self, ctx:LangAlgParser.Op_unarioContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#exp_aritmetica.
+    def enterExp_aritmetica(self, ctx:LangAlgParser.Exp_aritmeticaContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#exp_aritmetica.
+    def exitExp_aritmetica(self, ctx:LangAlgParser.Exp_aritmeticaContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#termo.
+    def enterTermo(self, ctx:LangAlgParser.TermoContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#termo.
+    def exitTermo(self, ctx:LangAlgParser.TermoContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#fator.
+    def enterFator(self, ctx:LangAlgParser.FatorContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#fator.
+    def exitFator(self, ctx:LangAlgParser.FatorContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#op1.
+    def enterOp1(self, ctx:LangAlgParser.Op1Context):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#op1.
+    def exitOp1(self, ctx:LangAlgParser.Op1Context):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#op2.
+    def enterOp2(self, ctx:LangAlgParser.Op2Context):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#op2.
+    def exitOp2(self, ctx:LangAlgParser.Op2Context):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#op3.
+    def enterOp3(self, ctx:LangAlgParser.Op3Context):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#op3.
+    def exitOp3(self, ctx:LangAlgParser.Op3Context):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#parcela.
+    def enterParcela(self, ctx:LangAlgParser.ParcelaContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#parcela.
+    def exitParcela(self, ctx:LangAlgParser.ParcelaContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#parcela_unario.
+    def enterParcela_unario(self, ctx:LangAlgParser.Parcela_unarioContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#parcela_unario.
+    def exitParcela_unario(self, ctx:LangAlgParser.Parcela_unarioContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#parcela_nao_unario.
+    def enterParcela_nao_unario(self, ctx:LangAlgParser.Parcela_nao_unarioContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#parcela_nao_unario.
+    def exitParcela_nao_unario(self, ctx:LangAlgParser.Parcela_nao_unarioContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#exp_relacional.
+    def enterExp_relacional(self, ctx:LangAlgParser.Exp_relacionalContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#exp_relacional.
+    def exitExp_relacional(self, ctx:LangAlgParser.Exp_relacionalContext):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#op_relacional.
+    def enterOp_relacional(self, ctx:LangAlgParser.Op_relacionalContext):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#op_relacional.
+    def exitOp_relacional(self, ctx:LangAlgParser.Op_relacionalContext):
         pass
 
 
@@ -239,42 +410,6 @@ class LangAlgListener(ParseTreeListener):
 
     # Exit a parse tree produced by LangAlgParser#expressao.
     def exitExpressao(self, ctx:LangAlgParser.ExpressaoContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#expressao_aritmetica.
-    def enterExpressao_aritmetica(self, ctx:LangAlgParser.Expressao_aritmeticaContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#expressao_aritmetica.
-    def exitExpressao_aritmetica(self, ctx:LangAlgParser.Expressao_aritmeticaContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#termo_aritmetico.
-    def enterTermo_aritmetico(self, ctx:LangAlgParser.Termo_aritmeticoContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#termo_aritmetico.
-    def exitTermo_aritmetico(self, ctx:LangAlgParser.Termo_aritmeticoContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#fator_aritmetico.
-    def enterFator_aritmetico(self, ctx:LangAlgParser.Fator_aritmeticoContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#fator_aritmetico.
-    def exitFator_aritmetico(self, ctx:LangAlgParser.Fator_aritmeticoContext):
-        pass
-
-
-    # Enter a parse tree produced by LangAlgParser#expressao_logica.
-    def enterExpressao_logica(self, ctx:LangAlgParser.Expressao_logicaContext):
-        pass
-
-    # Exit a parse tree produced by LangAlgParser#expressao_logica.
-    def exitExpressao_logica(self, ctx:LangAlgParser.Expressao_logicaContext):
         pass
 
 
@@ -296,21 +431,30 @@ class LangAlgListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by LangAlgParser#relacional.
-    def enterRelacional(self, ctx:LangAlgParser.RelacionalContext):
+    # Enter a parse tree produced by LangAlgParser#parcela_logica.
+    def enterParcela_logica(self, ctx:LangAlgParser.Parcela_logicaContext):
         pass
 
-    # Exit a parse tree produced by LangAlgParser#relacional.
-    def exitRelacional(self, ctx:LangAlgParser.RelacionalContext):
+    # Exit a parse tree produced by LangAlgParser#parcela_logica.
+    def exitParcela_logica(self, ctx:LangAlgParser.Parcela_logicaContext):
         pass
 
 
-    # Enter a parse tree produced by LangAlgParser#operador_relacional.
-    def enterOperador_relacional(self, ctx:LangAlgParser.Operador_relacionalContext):
+    # Enter a parse tree produced by LangAlgParser#op_logico_1.
+    def enterOp_logico_1(self, ctx:LangAlgParser.Op_logico_1Context):
         pass
 
-    # Exit a parse tree produced by LangAlgParser#operador_relacional.
-    def exitOperador_relacional(self, ctx:LangAlgParser.Operador_relacionalContext):
+    # Exit a parse tree produced by LangAlgParser#op_logico_1.
+    def exitOp_logico_1(self, ctx:LangAlgParser.Op_logico_1Context):
+        pass
+
+
+    # Enter a parse tree produced by LangAlgParser#op_logico_2.
+    def enterOp_logico_2(self, ctx:LangAlgParser.Op_logico_2Context):
+        pass
+
+    # Exit a parse tree produced by LangAlgParser#op_logico_2.
+    def exitOp_logico_2(self, ctx:LangAlgParser.Op_logico_2Context):
         pass
 
 
