@@ -429,6 +429,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitPrograma" ):
                 listener.exitPrograma(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPrograma" ):
+                return visitor.visitPrograma(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -481,6 +487,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitDeclaracoes" ):
                 listener.exitDeclaracoes(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDeclaracoes" ):
+                return visitor.visitDeclaracoes(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -536,6 +548,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitDecl_local_global" ):
                 listener.exitDecl_local_global(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDecl_local_global" ):
+                return visitor.visitDecl_local_global(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -618,6 +636,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitDeclaracao_local" ):
                 listener.exitDeclaracao_local(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDeclaracao_local" ):
+                return visitor.visitDeclaracao_local(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -713,6 +737,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitVariavel" ):
                 listener.exitVariavel(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitVariavel" ):
+                return visitor.visitVariavel(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -783,6 +813,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitIdentificador" ):
                 listener.exitIdentificador(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitIdentificador" ):
+                return visitor.visitIdentificador(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -856,6 +892,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitDimensao" ):
                 listener.exitDimensao(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDimensao" ):
+                return visitor.visitDimensao(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -914,6 +956,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitTipo" ):
                 listener.exitTipo(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTipo" ):
+                return visitor.visitTipo(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -978,6 +1026,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitTipo_basico" ):
                 listener.exitTipo_basico(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTipo_basico" ):
+                return visitor.visitTipo_basico(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1028,6 +1082,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitTipo_basico_ident" ):
                 listener.exitTipo_basico_ident(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTipo_basico_ident" ):
+                return visitor.visitTipo_basico_ident(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1086,6 +1146,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitTipo_estendido" ):
                 listener.exitTipo_estendido(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTipo_estendido" ):
+                return visitor.visitTipo_estendido(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1149,6 +1215,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitValor_constante" ):
                 listener.exitValor_constante(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitValor_constante" ):
+                return visitor.visitValor_constante(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1205,6 +1277,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitRegistro" ):
                 listener.exitRegistro(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRegistro" ):
+                return visitor.visitRegistro(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1302,6 +1380,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitDeclaracao_global" ):
                 listener.exitDeclaracao_global(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDeclaracao_global" ):
+                return visitor.visitDeclaracao_global(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1454,6 +1538,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitParametro" ):
                 listener.exitParametro(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitParametro" ):
+                return visitor.visitParametro(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1530,6 +1620,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitParametros" ):
                 listener.exitParametros(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitParametros" ):
+                return visitor.visitParametros(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1594,6 +1690,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitCorpo" ):
                 listener.exitCorpo(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCorpo" ):
+                return visitor.visitCorpo(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1691,6 +1793,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitCmd" ):
                 listener.exitCmd(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmd" ):
+                return visitor.visitCmd(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1819,6 +1927,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitCmdLeia" ):
                 listener.exitCmdLeia(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdLeia" ):
+                return visitor.visitCmdLeia(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1914,6 +2028,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitCmdEscreva" ):
                 listener.exitCmdEscreva(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdEscreva" ):
+                return visitor.visitCmdEscreva(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1993,6 +2113,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitCmdSe" ):
                 listener.exitCmdSe(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdSe" ):
+                return visitor.visitCmdSe(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2094,6 +2220,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitCmdCaso" ):
                 listener.exitCmdCaso(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdCaso" ):
+                return visitor.visitCmdCaso(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2191,6 +2323,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitCmdPara" ):
                 listener.exitCmdPara(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdPara" ):
+                return visitor.visitCmdPara(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2274,6 +2412,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitCmdEnquanto" ):
                 listener.exitCmdEnquanto(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdEnquanto" ):
+                return visitor.visitCmdEnquanto(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2346,6 +2490,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitCmdFaca" ):
                 listener.exitCmdFaca(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdFaca" ):
+                return visitor.visitCmdFaca(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2412,6 +2562,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitCmdAtribuicao" ):
                 listener.exitCmdAtribuicao(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdAtribuicao" ):
+                return visitor.visitCmdAtribuicao(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2486,6 +2642,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitCmdChamada" ):
                 listener.exitCmdChamada(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdChamada" ):
+                return visitor.visitCmdChamada(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2550,6 +2712,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitCmdRetorne" ):
                 listener.exitCmdRetorne(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCmdRetorne" ):
+                return visitor.visitCmdRetorne(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2596,6 +2764,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitSelecao" ):
                 listener.exitSelecao(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitSelecao" ):
+                return visitor.visitSelecao(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2657,6 +2831,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitItem_selecao" ):
                 listener.exitItem_selecao(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitItem_selecao" ):
+                return visitor.visitItem_selecao(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2721,6 +2901,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitConstantes" ):
                 listener.exitConstantes(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitConstantes" ):
+                return visitor.visitConstantes(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2789,6 +2975,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitNumero_intervalo" ):
                 listener.exitNumero_intervalo(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitNumero_intervalo" ):
+                return visitor.visitNumero_intervalo(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2855,6 +3047,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitOp_unario" ):
                 listener.exitOp_unario(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOp_unario" ):
+                return visitor.visitOp_unario(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2906,6 +3104,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitExp_aritmetica" ):
                 listener.exitExp_aritmetica(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitExp_aritmetica" ):
+                return visitor.visitExp_aritmetica(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2972,6 +3176,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitTermo" ):
                 listener.exitTermo(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTermo" ):
+                return visitor.visitTermo(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3037,6 +3247,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitFator" ):
                 listener.exitFator(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFator" ):
+                return visitor.visitFator(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3089,6 +3305,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitOp1" ):
                 listener.exitOp1(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOp1" ):
+                return visitor.visitOp1(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3134,6 +3356,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitOp2" ):
                 listener.exitOp2(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOp2" ):
+                return visitor.visitOp2(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3178,6 +3406,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitOp3" ):
                 listener.exitOp3(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOp3" ):
+                return visitor.visitOp3(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -3228,6 +3462,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitParcela" ):
                 listener.exitParcela(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitParcela" ):
+                return visitor.visitParcela(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -3323,6 +3563,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitParcela_unario" ):
                 listener.exitParcela_unario(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitParcela_unario" ):
+                return visitor.visitParcela_unario(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -3434,6 +3680,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitParcela_nao_unario" ):
                 listener.exitParcela_nao_unario(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitParcela_nao_unario" ):
+                return visitor.visitParcela_nao_unario(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3498,6 +3750,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitExp_relacional" ):
                 listener.exitExp_relacional(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitExp_relacional" ):
+                return visitor.visitExp_relacional(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3547,6 +3805,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitOp_relacional" ):
                 listener.exitOp_relacional(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOp_relacional" ):
+                return visitor.visitOp_relacional(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -3605,6 +3869,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitExpressao" ):
                 listener.exitExpressao(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitExpressao" ):
+                return visitor.visitExpressao(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -3671,6 +3941,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitTermo_logico" ):
                 listener.exitTermo_logico(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTermo_logico" ):
+                return visitor.visitTermo_logico(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3725,6 +4001,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitFator_logico" ):
                 listener.exitFator_logico(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFator_logico" ):
+                return visitor.visitFator_logico(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -3783,6 +4065,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitParcela_logica" ):
                 listener.exitParcela_logica(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitParcela_logica" ):
+                return visitor.visitParcela_logica(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3840,6 +4128,12 @@ class LangAlgParser ( Parser ):
             if hasattr( listener, "exitOp_logico_1" ):
                 listener.exitOp_logico_1(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOp_logico_1" ):
+                return visitor.visitOp_logico_1(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3878,6 +4172,12 @@ class LangAlgParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitOp_logico_2" ):
                 listener.exitOp_logico_2(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOp_logico_2" ):
+                return visitor.visitOp_logico_2(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
