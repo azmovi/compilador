@@ -1,4 +1,4 @@
-from antlr4 import CommonTokenStream
+from antlr4 import CommonTokenStream, Token
 from antlr4.error.ErrorListener import ErrorListener
 from antlr4.Token import CommonToken
 
@@ -41,7 +41,7 @@ def run_syntactic_analysis(input_file: str, output_file: str):
 
 def get_syntatic_error(token: MyToken) -> str:
     """Pegar a mensagem para escrever no arquivo de output"""
-    if token.type == -1:
+    if token.type == Token.EOF:
         msg = f'Linha {token.line}: erro sintatico proximo a EOF'
     else:
         msg = f'Linha {token.line}: erro sintatico proximo a {token.text}'

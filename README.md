@@ -81,3 +81,25 @@ java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.ja
 compilador syntactical <input_file> <output_file>
 ```
 </details>
+
+<details>
+<summary><strong> Analisador Semântico </strong></summary>
+
+- Implementação de um analisador semântico para a linguagem LA.
+- Ele deve ler um programa-fonte e produzir uma mensagem caso encontre um erro
+#### Como rodar:
+- Entra no ambiente virtual
+```bash
+source .venv/bin/activate
+```
+- Depois executa o comando corretor automático passando os respectivos diretórios
+```bash
+java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador semantical" gcc temp casos-de-teste "811455, 802534, 811797" t3
+```
+- O output será gerado no diretório `temp/`
+
+- Caso queria rodar o CLI normalmente basta rodar
+```bash
+compilador semantical <input_file> <output_file>
+```
+</details>

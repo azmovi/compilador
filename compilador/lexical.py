@@ -32,5 +32,4 @@ def create_token_list(lexer: LangAlgLexer) -> list[MyToken]:
 
         if not my_token.is_valid:
             return token_list
-
     return token_list

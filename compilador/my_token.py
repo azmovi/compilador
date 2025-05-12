@@ -1,3 +1,4 @@
+from antlr4 import Token
 from compilador.parser.LangAlgLexer import LangAlgLexer
 
 
@@ -28,11 +29,12 @@ class MyToken:
 
     @property
     def name(self) -> str:
-        threshold = 14  # Alinhamento vetor de nomes simbolicos com o tipo do token
-        if repr(self.text) in LangAlgLexer.literalNames:
+        if self.type == Token.EOF:
+            return "EOF"
+        elif repr(self.text) in LangAlgLexer.literalNames:
             return repr(self.text)
         else:
-            return LangAlgLexer.symbolicNames[self.type - threshold]
+            return LangAlgLexer.symbolicNames[self.type]
 
     @property
     def is_valid(self) -> bool:
