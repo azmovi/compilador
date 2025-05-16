@@ -4,14 +4,28 @@ from compilador.symbolsTable import SymbolEntry
 
 DEBUG = False
 
-# Lista de tipos válidos na linguagem
+# Constantes da linguagem
 valid_types = ('inteiro', 'real', 'literal', 'logico', 'registro')
 invalid = 'invalid'
 
+# Operadores por categoria
+ARITMETICOS = ['+', '-', '*', '/']
+RELACIONAIS_NUMERICOS = ['>', '<', '>=', '<=']
+RELACIONAIS_IGUALDADE = ['=', '<>']
+LOGICOS = ['e', 'ou']
+
 class LangAlgSemantic(LangAlgVisitor):
+    """
+    Analisador semântico para a linguagem LangAlg.
+    
+    Esta classe implementa o padrão Visitor para percorrer a árvore sintática
+    e realizar as verificações semânticas necessárias.
+    """
+    
     def __init__(self):
         self.scopes = Scope()
         self.errors = []
+        self.current_function = None
     
     def visitPrograma(self, ctx, output_file):
         result = self.visitChildren(ctx)
@@ -30,62 +44,72 @@ class LangAlgSemantic(LangAlgVisitor):
         self.errors.append(error_msg)
         return invalid
     
-    def addEntry(self, name, type_str, kind, line, fields=None):
+    def addEntry(self, name, type, kind, line, fields=None):
         """Adiciona uma entrada na tabela de símbolos"""
         if self.scopes.searchNestedScope(name) == self.scopes.currentScope():
             self.addError(f"identificador {name} ja declarado anteriormente", line)
             return invalid
-        entry = SymbolEntry(name=name, type=type_str, kind=kind, line=line, fields=fields or [])
-        self.scopes.currentScope().symbols[name] = entry  # Adiciona diretamente à tabela
-        return type_str
+        entry = SymbolEntry(name=name, type=type, kind=kind, line=line, fields=fields or [])
+        self.scopes.currentScope().symbols[name] = entry 
+        return type
     
-    # Visite declarações locais
     def visitDeclaracao_local(self, ctx):
         if DEBUG: print("Visit Declaracao_local: ", ctx.getText())
-        if ctx.DECLARE():
+        
+        if ctx.DECLARE(): # DECLARE variavel
             return self.visitVariavel(ctx.variavel())
-        elif ctx.CONSTANTE():
+        
+        elif ctx.CONSTANTE(): # CONSTANTE IDENT DOIS_PONTOS tipo_basico IGUAL valor_constante
             name = ctx.IDENT().getText()
             tipo = ctx.tipo_basico().getText()
             return self.addEntry(name, tipo, 'constante', ctx.start.line)
-        elif ctx.TIPO():
+        
+        elif ctx.TIPO(): # TIPO IDENT DOIS_PONTOS tipo
             name = ctx.IDENT().getText()
             if ctx.tipo().registro():
-                return self.addEntry(name, 'registro', 'tipo', ctx.start.line)
+                fields = self.extractFields(ctx.tipo().registro(), ctx.start.line)
+                return self.addEntry(name, name, 'tipo', ctx.start.line, fields)
             else:
-                tipo_texto = ctx.tipo().getText()
+                tipo_texto = self.processTipo(ctx.tipo(), ctx.start.line)
                 return self.addEntry(name, tipo_texto, 'tipo', ctx.start.line)
         return None
     
-    # Visite declarações globais
     def visitDeclaracao_global(self, ctx):
         if DEBUG: print("Visit Declaracao_global: ", ctx.getText())
         name = ctx.IDENT().getText()
         is_function = ctx.FUNCAO() is not None
         
+        if self.scopes.searchNestedScope(name) == self.scopes.currentScope():
+            return self.addError(f"identificador {name} ja declarado anteriormente", ctx.start.line)
+        
         # Criar novo escopo para os parâmetros
         self.scopes.createScope()
         
+        old_function = self.current_function
+        if is_function:
+            self.current_function = name
+        
         # Processar parâmetros
+        params_info = []
         if ctx.parametros():
-            self.visitParametros(ctx.parametros())
+            params_info = self.visitParametros(ctx.parametros())
         
         # Registrar função/procedimento no escopo anterior
         kind = 'funcao' if is_function else 'procedimento'
-        tipo = ctx.tipo_estendido().getText() if is_function and ctx.tipo_estendido() else 'void'
-        
-        # Verificar se o tipo de retorno existe (apenas para funções)
-        if is_function and tipo not in valid_types and tipo != 'void':
-            symbol_table = self.scopes.searchNestedScope(tipo)
-            if not symbol_table or not symbol_table.get(tipo):
-                self.addError(f"tipo {tipo} nao declarado", ctx.start.line)
+        tipo = invalid
+        if is_function and ctx.tipo_estendido():
+            tipo = self.processTipo_estendido(ctx, ctx.start.line)
+        elif not is_function:
+            tipo = 'void'
         
         self.scopes.tablesList[-2].symbols[name] = SymbolEntry(
-            name=name, type=tipo, kind=kind, line=ctx.start.line
+            name=name, type=tipo, kind=kind, line=ctx.start.line, fields=params_info
         )
         
         # Processar corpo
         self.visitCorpo(ctx.corpo())
+        
+        self.current_function = old_function
         
         # Sair do escopo
         self.scopes.leaveScope()
@@ -98,28 +122,16 @@ class LangAlgSemantic(LangAlgVisitor):
         tipo_ctx = ctx.tipo()
         
         # Determinar o tipo
-        if tipo_ctx.registro():
-            tipo = 'registro'
-        elif tipo_ctx.tipo_estendido():
-            tipo_text = tipo_ctx.tipo_estendido().getText()
-            # Verificar se é um tipo básico ou um tipo definido pelo usuário
-            if tipo_text in valid_types:
-                tipo = tipo_text
-            else:
-                # Verificar se o tipo foi declarado
-                symbol_table = self.scopes.searchNestedScope(tipo_text)
-                if not symbol_table or not symbol_table.get(tipo_text):
-                    self.addError(f"tipo {tipo_text} nao declarado", tipo_ctx.start.line)
-                    tipo = invalid
-                else:
-                    tipo = tipo_text
-        else:
-            tipo = invalid
+        tipo = self.processTipo(tipo_ctx, ctx.start.line)
         
         # Adicionar cada variável à tabela de símbolos
         for id_ctx in identifiers:
             name = id_ctx.IDENT(0).getText()
-            self.addEntry(name, tipo, 'variavel', id_ctx.start.line)
+            if tipo == 'registro':
+                fields = self.extractFields(tipo_ctx.registro(), ctx.start.line)
+                self.addEntry(name, tipo, 'variavel', ctx.start.line, fields)
+            else:
+                self.addEntry(name, tipo, 'variavel', id_ctx.start.line)
         
         return None
     
@@ -130,26 +142,74 @@ class LangAlgSemantic(LangAlgVisitor):
             
         if len(ctx.IDENT()) == 0:
             return invalid
-        
+
         base_name = ctx.IDENT(0).getText()
         symbol_table = self.scopes.searchNestedScope(base_name)
         
         # Verificação 3: Identificador não declarado
         if not symbol_table:
-            return self.addError(f"identificador {base_name} nao declarado", ctx.start.line)
+            if len(ctx.IDENT()) == 1:
+                return self.addError(f"identificador {base_name} nao declarado", ctx.start.line)
+            else:
+                registro_name = '.'.join([id.getText() for id in ctx.IDENT()])
+                return self.addError(f"identificador {registro_name} nao declarado", ctx.start.line)
         
         entry = symbol_table.get(base_name)
+        
+        # Verificar acesso a campos de registro
+        if len(ctx.IDENT()) > 1:
+            tipo_atual = entry.type
+            
+            
+            if tipo_atual == 'registro':
+                name = ctx.IDENT(0).getText()
+                registro_table = self.scopes.searchNestedScope(name)
+                registro_entry = registro_table.get(name)
+            else:
+                # Se for um ponteiro para registro, verificar o tipo apontado
+                if tipo_atual.startswith('^'):
+                    tipo_atual = tipo_atual[1:]  # Remove o ^ para verificar o tipo apontado
+                
+                # Procurar o tipo do registro na tabela de símbolos
+                registro_table = self.scopes.searchNestedScope(tipo_atual)
+                if not registro_table:
+                    return invalid
+                    
+                registro_entry = registro_table.get(tipo_atual)
+                if not registro_entry or not registro_entry.fields:
+                    return invalid
+                
+            # Verificar acesso aos campos do registro
+            campo_atual = ctx.IDENT(1).getText()
+            for field in registro_entry.fields:
+                if field["name"] == campo_atual:
+                    return field["type"]
+                    
+            # Campo não encontrado no registro
+            self.addError(f"identificador {base_name}.{campo_atual} nao declarado", ctx.start.line)
+            return invalid
+        
         return entry.type
+    
+    def visitParametros(self, ctx):
+        """Visita os parâmetros formais e retorna informações sobre eles"""
+        params_info = []
+        
+        for param_ctx in ctx.parametro():
+            tipo = self.processTipo_estendido(param_ctx, param_ctx.start.line)
+            is_var = param_ctx.VAR() is not None
+            
+            for id_ctx in param_ctx.identificador():
+                name = id_ctx.IDENT(0).getText()
+                kind = 'var_param' if is_var else 'param'
+                self.addEntry(name, tipo, kind, id_ctx.start.line)
+                params_info.append({"name": name, "type": tipo, "is_var": is_var})
+                
+        return params_info
     
     def visitParametro(self, ctx):
         if DEBUG: print("Visit Parametro: ", ctx.getText())
-        tipo = ctx.tipo_estendido().getText()
-        
-        # Verificar se o tipo existe
-        if tipo not in valid_types:
-            symbol_table = self.scopes.searchNestedScope(tipo)
-            if not symbol_table or not symbol_table.get(tipo):
-                self.addError(f"tipo {tipo} nao declarado", ctx.start.line)
+        tipo = self.processTipo(ctx.tipo_estendido(), ctx.start.line)
         
         # Adicionar parâmetros à tabela de símbolos
         for id_ctx in ctx.identificador():
@@ -159,17 +219,66 @@ class LangAlgSemantic(LangAlgVisitor):
         
         return None
     
+    def visitCmdChamada(self, ctx):
+        """Visita uma chamada de procedimento"""
+        if DEBUG: print("Visit CmdChamada: ", ctx.getText())
+        
+        proc_name = ctx.IDENT().getText()
+        symbol_table = self.scopes.searchNestedScope(proc_name)
+        
+        if not symbol_table:
+            return self.addError(f"identificador {proc_name} nao declarado", ctx.start.line)
+        
+        proc_entry = symbol_table.get(proc_name)
+        if proc_entry.kind != 'procedimento':
+            return self.addError(f"identificador {proc_name} nao e um procedimento", ctx.start.line)
+        
+        # Verificar compatibilidade de argumentos
+        self.verifyArguments(ctx.expressao(), proc_entry.fields, ctx.start.line, proc_name)
+        
+        return None
+    
     def visitCmdAtribuicao(self, ctx):
         if DEBUG: print("Visit CmdAtribuicao: ", ctx.getText())
         # Obter tipo do identificador (variável que recebe a atribuição)
         id_type = self.visitIdentificador(ctx.identificador())
+        if id_type == invalid:
+            return None
         # Obter tipo da expressão
         exp_type = self.visitExpressao(ctx.expressao())
-        
-        # Verificação 4: Atribuição não compatível
+            
+        # Verificação: Atribuição não compatível
         if not self.checkCompatible(id_type, exp_type):
             var_name = ctx.identificador().getText()
+            if id_type.startswith('^'):
+                var_name = '^' + var_name
             self.addError(f"atribuicao nao compativel para {var_name}", ctx.start.line)
+        return None
+    
+    def visitCmdRetorne(self, ctx):
+        """Verifica se o comando retorne está em um contexto de função"""
+        if DEBUG: print("Visit CmdRetorne: ", ctx.getText())
+        
+        # Verificar se estamos dentro de uma função
+        if not self.current_function:
+            return self.addError("comando retorne nao permitido nesse escopo", ctx.start.line)
+        
+        # Obter o tipo da expressão retornada
+        exp_type = self.visitExpressao(ctx.expressao())
+        
+        # Obter o tipo da função atual
+        symbol_table = self.scopes.searchNestedScope(self.current_function)
+        if not symbol_table:
+            return invalid
+            
+        func_entry = symbol_table.get(self.current_function)
+        if not func_entry:
+            return invalid
+            
+        # Verificar compatibilidade do tipo retornado com o tipo da função
+        if not self.checkCompatible(func_entry.type, exp_type):
+            return self.addError(f"incompatibilidade de tipos no retorno de {self.current_function}", ctx.start.line)
+        
         return None
     
     def visitExpressao(self, ctx):
@@ -199,7 +308,6 @@ class LangAlgSemantic(LangAlgVisitor):
                 return invalid
         return 'logico'
         
-    
     def visitFator_logico(self, ctx):
         if isinstance(ctx, list):
             ctx = ctx[0]
@@ -264,7 +372,6 @@ class LangAlgSemantic(LangAlgVisitor):
                 break
         return tipo_resultante
             
-    
     def visitTermo(self, ctx):
         if isinstance(ctx, list):
             ctx = ctx[0]
@@ -336,8 +443,14 @@ class LangAlgSemantic(LangAlgVisitor):
             if entry.kind != 'funcao':
                 return self.addError(f"identificador {func_name} nao e uma funcao", ctx.start.line)
             
+            if ctx.expressao():
+                # Verificar compatibilidade de argumentos
+                self.verifyArguments(ctx.expressao(), entry.fields, ctx.start.line, func_name)
+            
             return entry.type
         elif ctx.expressao():
+            if isinstance(ctx.expressao(), list):
+                return self.visitExpressao(ctx.expressao()[0])
             return self.visitExpressao(ctx.expressao())
         return invalid
 
@@ -349,7 +462,6 @@ class LangAlgSemantic(LangAlgVisitor):
             return 'literal'
         return invalid
     
-    # Método auxiliar para verificar compatibilidade de tipos
     def checkCompatible(self, tipo_destino, tipo_origem):
         if DEBUG: print(f"Verificando compatibilidade: {tipo_destino} <- {tipo_origem}")
         """Verifica se a atribuição é compatível conforme as regras especificadas"""
@@ -359,13 +471,13 @@ class LangAlgSemantic(LangAlgVisitor):
         
         # Caso 1: ponteiro ← endereço
         if tipo_destino.startswith('^') and tipo_origem.startswith('^'):
-            return True
+            # Verificar se os tipos apontados são compatíveis
+            tipo_apontado_destino = tipo_destino[1:]  
+            tipo_apontado_origem = tipo_origem[1:]  
+            return tipo_apontado_destino == tipo_apontado_origem
         
         # Caso 2: (real | inteiro) ← (real | inteiro)
         if tipo_destino in ('real', 'inteiro') and tipo_origem in ('real', 'inteiro'):
-            # Não permitir atribuição de real para inteiro
-            if tipo_destino == 'inteiro' and tipo_origem == 'real':
-                return False
             return True
         
         # Caso 3: literal ← literal
@@ -377,8 +489,10 @@ class LangAlgSemantic(LangAlgVisitor):
             return True
         
         # Caso 5: registro ← registro (mesmo nome)
-        if tipo_destino == 'registro' and tipo_origem == 'registro':
-            return True
+        if tipo_destino == tipo_origem:
+            scope_dest = self.scopes.searchNestedScope(tipo_destino)
+            if scope_dest and scope_dest.get(tipo_destino):
+                return True
         
         # Se não se encaixa em nenhum caso, não é compatível
         return False
@@ -389,7 +503,7 @@ class LangAlgSemantic(LangAlgVisitor):
             return invalid
         
         # Operações aritméticas
-        if operador in ['+', '-', '*', '/']:
+        if operador in ARITMETICOS:
             # Operações entre tipos numéricos
             if tipo1 in ['inteiro', 'real'] and tipo2 in ['inteiro', 'real']:
                 # Se algum for real, o resultado é real
@@ -407,12 +521,75 @@ class LangAlgSemantic(LangAlgVisitor):
             return invalid
         
         # Operações lógicas
-        if operador in ['e', 'ou']:
+        if operador in LOGICOS:
             if tipo1 == 'logico' and tipo2 == 'logico':
                 return 'logico'            
             return invalid
         
         return invalid
+
+    def processTipo(self, tipo_ctx, line):
+        """Processa um contexto de tipo e retorna o tipo correspondente"""
+        if tipo_ctx.registro():
+            return 'registro'
+        elif tipo_ctx.tipo_estendido():
+            return self.processTipo_estendido(tipo_ctx, line)
+        return invalid
+    
+    def processTipo_estendido(self, tipo_ctx, line):
+        tipo_text = tipo_ctx.tipo_estendido().getText()
+        # Verificar tipo ponteiro
+        is_pointer = tipo_text.startswith('^')
+        if is_pointer:
+            tipo_text = tipo_text[1:]  # Remove o ^ do início
+            
+        # Verificar se é um tipo básico ou um tipo definido pelo usuário
+        if tipo_text in valid_types:
+            tipo = tipo_text
+        else:
+            # Verificar se o tipo foi declarado
+            symbol_table = self.scopes.searchNestedScope(tipo_text)
+            if not symbol_table or not symbol_table.get(tipo_text):
+                self.addError(f"tipo {tipo_text} nao declarado", line)
+                tipo = invalid
+            else:
+                tipo = tipo_text
+                
+        # Adicionar o ^ de volta se for ponteiro
+        if is_pointer:
+            tipo = '^' + tipo
+            
+        return tipo
+    
+    def verifyArguments(self, expressoes_ctx, params_formais, line, nome_subprograma):
+        """Verifica se os argumentos são compatíveis com os parâmetros formais"""
+        if expressoes_ctx is None:
+            expressoes_ctx = []
+            
+        # Verificar número de argumentos
+        if len(expressoes_ctx) != len(params_formais):
+            return self.addError(f"incompatibilidade de parametros na chamada de {nome_subprograma}", line)
+        
+        # Verificar tipo de cada argumento
+        for i, exp_ctx in enumerate(expressoes_ctx):
+            arg_tipo = self.visitExpressao(exp_ctx)
+            param_tipo = params_formais[i]["type"]
+            
+            if param_tipo != arg_tipo:
+                return self.addError(f"incompatibilidade de parametros na chamada de {nome_subprograma}", line)
+        
+        return None
+    
+    def extractFields(self, registro_ctx, line):
+        """Extrai os campos de um tipo de registro"""
+        fields = []
+        if registro_ctx.variavel():
+            for var in registro_ctx.variavel():
+                field_tipo = self.processTipo(var.tipo(), line)
+                for id_ctx in var.identificador():
+                    field_name = id_ctx.IDENT(0).getText()
+                    fields.append({"name": field_name, "type": field_tipo})
+        return fields
 
 def run_semantic_analysis(input_file: str, output_file: str):
     from compilador.lexical import get_lexer
