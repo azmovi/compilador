@@ -30,7 +30,7 @@ class MyToken:
     @property
     def name(self) -> str:
         if self.type == Token.EOF:
-            return "EOF"
+            return 'EOF'
         elif repr(self.text) in LangAlgLexer.literalNames:
             return repr(self.text)
         else:
