@@ -48,3 +48,4 @@ test1 = 'java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-depend
 test2 = 'java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador syntactical" gcc temp casos-de-teste "811455, 802534, 811797" t2'
 test3 = 'java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador semantical" gcc temp casos-de-teste "811455, 802534, 811797" t3'
 test4 = 'java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador semantical" gcc temp casos-de-teste "811455, 802534, 811797" t4'
+test = 'task test1 && task test2 && task test3 && task test4'

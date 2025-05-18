@@ -1,4 +1,5 @@
 from antlr4 import Token
+
 from compilador.parser.LangAlgLexer import LangAlgLexer
 
 

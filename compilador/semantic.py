@@ -23,20 +23,22 @@ class LangAlgSemantic(LangAlgVisitor):
     e realizar as verificações semânticas necessárias.
     """
 
-    def __init__(self):
+    def __init__(self, output_file: str | None = None):
         self.scopes = Scope()
         self.errors = []
         self.current_function = None
+        self.output_file = output_file
 
-    def visitPrograma(self, ctx, output_file):
-        result = self.visitChildren(ctx)
-
-        if output_file:
-            with open(output_file, 'w', encoding='utf-8') as f:
+    def create_file(self):
+        if self.output_file:
+            with open(self.output_file, 'w', encoding='utf-8') as f:
                 for e in self.errors:
                     f.write(e + '\n')
                 f.write('Fim da compilacao\n')
 
+    def visitPrograma(self, ctx):
+        result = self.visitChildren(ctx)
+        self.create_file()
         return result
 
     def addError(self, message, line):
@@ -143,8 +145,6 @@ class LangAlgSemantic(LangAlgVisitor):
             else:
                 self.addEntry(name, tipo, 'variavel', id_ctx.start.line)
 
-        return None
-
     def visitIdentificador(self, ctx):
         if DEBUG:
             print('Visit Identificador: ', ctx.getText())
@@ -235,8 +235,6 @@ class LangAlgSemantic(LangAlgVisitor):
             name = id_ctx.IDENT(0).getText()
             kind = 'var_param' if ctx.VAR() else 'param'
             self.addEntry(name, tipo, kind, id_ctx.start.line)
-
-        return None
 
     def visitCmdChamada(self, ctx):
         """Visita uma chamada de procedimento"""
@@ -656,7 +654,7 @@ def run_semantic_analysis(input_file: str, output_file: str):
 
     lexer = get_lexer(input_file)
     tree = get_parser(lexer).programa()
-    semantic = LangAlgSemantic()
-    semantic.visitPrograma(tree, output_file)
+    semantic = LangAlgSemantic(output_file)
+    semantic.visitPrograma(tree)
 
     return semantic.errors

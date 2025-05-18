@@ -2,8 +2,8 @@ from cyclopts import App
 from rich.console import Console
 
 from compilador.lexical import run_lexical_analysis
-from compilador.syntactic import run_syntactic_analysis
 from compilador.semantic import run_semantic_analysis
+from compilador.syntactic import run_syntactic_analysis
 
 console = Console()
 app = App(console=console)
