@@ -1,6 +1,8 @@
+from compilador.lexical import get_lexer
 from compilador.parser.LangAlgVisitor import LangAlgVisitor
 from compilador.scope import Scope
 from compilador.symbolsTable import SymbolEntry
+from compilador.syntactic import get_parser
 
 DEBUG = False
 
@@ -15,7 +17,7 @@ RELACIONAIS_IGUALDADE = ['=', '<>']
 LOGICOS = ['e', 'ou']
 
 
-class LangAlgSemantic(LangAlgVisitor):
+class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
     """
     Analisador semântico para a linguagem LangAlg.
 
@@ -29,7 +31,7 @@ class LangAlgSemantic(LangAlgVisitor):
         self.current_function = None
         self.output_file = output_file
 
-    def create_file(self):
+    def _create_file(self):
         if self.output_file:
             with open(self.output_file, 'w', encoding='utf-8') as f:
                 for e in self.errors:
@@ -38,7 +40,7 @@ class LangAlgSemantic(LangAlgVisitor):
 
     def visitPrograma(self, ctx):
         result = self.visitChildren(ctx)
-        self.create_file()
+        self._create_file()
         return result
 
     def addError(self, message, line):
@@ -373,15 +375,15 @@ class LangAlgSemantic(LangAlgVisitor):
         tipo1 = self.visitExp_aritmetica(ctx.exp_aritmetica(0))
         tipo2 = self.visitExp_aritmetica(ctx.exp_aritmetica(1))
 
-        if tipo1 == invalid or tipo2 == invalid:
+        if invalid in {tipo1, tipo2}:
             return invalid
 
-        if ctx.op_relacional().getText() in ['>', '<', '>=', '<=']:
-            if (tipo1 not in ['inteiro', 'real']) or (tipo2 not in ['inteiro', 'real']):
+        if ctx.op_relacional().getText() in {'>', '<', '>=', '<='}:
+            if (tipo1 not in {'inteiro', 'real'}) or (tipo2 not in {'inteiro', 'real'}):
                 return invalid
-        elif ctx.op_relacional().getText() in ['=', '<>']:
+        elif ctx.op_relacional().getText() in {'=', '<>'}:
             if not (
-                (tipo1 in ['inteiro', 'real'] and tipo2 in ['inteiro', 'real'])
+                (tipo1 in {'inteiro', 'real'} and tipo2 in {'inteiro', 'real'})
                 or (tipo1 == tipo2)
             ):
                 return invalid
@@ -422,7 +424,7 @@ class LangAlgSemantic(LangAlgVisitor):
 
         for fator in ctx.fator():
             tipo = self.visitFator(fator)
-            if tipo not in ['inteiro', 'real']:
+            if tipo not in {'inteiro', 'real'}:
                 return invalid
 
         # Em divisões o resultado é sempre real
@@ -443,7 +445,7 @@ class LangAlgSemantic(LangAlgVisitor):
             tipo = self.visitParcela(parcela)
             if tipo == 'real':
                 is_real = True
-            if tipo not in ['inteiro', 'real']:
+            if tipo not in {'inteiro', 'real'}:
                 return invalid
 
         # Se algum dos valores for real, o resultado é real
@@ -516,7 +518,7 @@ class LangAlgSemantic(LangAlgVisitor):
             print(f'Verificando compatibilidade: {tipo_destino} <- {tipo_origem}')
         """Verifica se a atribuição é compatível conforme as regras especificadas"""
         # Se algum dos tipos for inválido, a atribuição não é possível
-        if tipo_destino == invalid or tipo_origem == invalid:
+        if invalid in {tipo_destino, tipo_origem}:
             return False
 
         # Caso 1: ponteiro ← endereço
@@ -527,7 +529,7 @@ class LangAlgSemantic(LangAlgVisitor):
             return tipo_apontado_destino == tipo_apontado_origem
 
         # Caso 2: (real | inteiro) ← (real | inteiro)
-        if tipo_destino in ('real', 'inteiro') and tipo_origem in ('real', 'inteiro'):
+        if tipo_destino in {'real', 'inteiro'} and tipo_origem in {'real', 'inteiro'}:
             return True
 
         # Caso 3: literal ← literal
@@ -547,36 +549,33 @@ class LangAlgSemantic(LangAlgVisitor):
         # Se não se encaixa em nenhum caso, não é compatível
         return False
 
-    def getResultingType(self, tipo1, tipo2, operador):
+    @staticmethod
+    def getResultingType(tipo1, tipo2, operador):
         """Determina o tipo resultante de uma operação entre dois tipos"""
-        if tipo1 == invalid or tipo2 == invalid:
-            return invalid
+        tipo = invalid
 
         # Operações aritméticas
         if operador in ARITMETICOS:
             # Operações entre tipos numéricos
-            if tipo1 in ['inteiro', 'real'] and tipo2 in ['inteiro', 'real']:
+            if tipo1 in {'inteiro', 'real'} and tipo2 in {'inteiro', 'real'}:
                 # Se algum for real, o resultado é real
-                return 'real' if 'real' in [tipo1, tipo2] else 'inteiro'
+                tipo = 'real' if 'real' in {tipo1, tipo2} else 'inteiro'
 
             # Concatenação de strings com operador +
             if operador == '+' and tipo1 == 'literal' and tipo2 == 'literal':
-                return 'literal'
-            return invalid
+                tipo = 'literal'
 
         # Operação módulo (%)
-        if operador == '%':
+        elif operador == '%':
             if tipo1 == 'inteiro' and tipo2 == 'inteiro':
-                return 'inteiro'
-            return invalid
+                tipo = 'inteiro'
 
         # Operações lógicas
-        if operador in LOGICOS:
+        elif operador in LOGICOS:
             if tipo1 == 'logico' and tipo2 == 'logico':
-                return 'logico'
-            return invalid
+                tipo = 'logico'
 
-        return invalid
+        return tipo
 
     def processTipo(self, tipo_ctx, line):
         """Processa um contexto de tipo e retorna o tipo correspondente"""
@@ -649,9 +648,6 @@ class LangAlgSemantic(LangAlgVisitor):
 
 
 def run_semantic_analysis(input_file: str, output_file: str):
-    from compilador.lexical import get_lexer
-    from compilador.syntactic import get_parser
-
     lexer = get_lexer(input_file)
     tree = get_parser(lexer).programa()
     semantic = LangAlgSemantic(output_file)
