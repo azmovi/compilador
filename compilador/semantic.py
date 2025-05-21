@@ -170,37 +170,29 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
         entry = symbol_table.get(base_name)
 
         # Verificar acesso a campos de registro
-        if len(ctx.IDENT()) > 1:
+        if len(ctx.IDENT()) > 1 and entry:
             tipo_atual = entry.type
 
-            if tipo_atual == 'registro':
-                name = ctx.IDENT(0).getText()
-                registro_table = self.scopes.searchNestedScope(name)
-                registro_entry = registro_table.get(name)
-            else:
+            if tipo_atual != 'registro':
                 # Se for um ponteiro para registro, verificar o tipo apontado
                 if tipo_atual.startswith('^'):
                     tipo_atual = tipo_atual[1:]  # tratar ponteiro
 
                 # Procurar o tipo do registro na tabela de símbolos
-                registro_table = self.scopes.searchNestedScope(tipo_atual)
-                if not registro_table:
-                    return invalid
-
-                registro_entry = registro_table.get(tipo_atual)
-                if not registro_entry or not registro_entry.fields:
-                    return invalid
+                if registro_table := self.scopes.searchNestedScope(tipo_atual):
+                    entry = registro_table.get(tipo_atual)
+                    if not entry or not entry.fields:
+                        return invalid
 
             # Verificar acesso aos campos do registro
             campo_atual = ctx.IDENT(1).getText()
-            for field in registro_entry.fields:
+            for field in entry.fields:
                 if field['name'] == campo_atual:
                     return field['type']
 
             # Campo não encontrado no registro
             return self.addError(
-                f'identificador {base_name}.{campo_atual} nao declarado',
-                ctx.start.line
+                f'identificador {base_name}.{campo_atual} nao declarado', ctx.start.line
             )
 
         return entry.type
