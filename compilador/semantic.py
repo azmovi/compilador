@@ -161,15 +161,11 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
 
         # Verificação 3: Identificador não declarado
         if not symbol_table:
-            if len(ctx.IDENT()) == 1:
-                return self.addError(
-                    f'identificador {base_name} nao declarado', ctx.start.line
-                )
-            else:
-                registro_name = '.'.join([id.getText() for id in ctx.IDENT()])
-                return self.addError(
-                    f'identificador {registro_name} nao declarado', ctx.start.line
-                )
+            if len(ctx.IDENT()) != 1:
+                base_name = '.'.join([id.getText() for id in ctx.IDENT()])
+            return self.addError(
+                f'identificador {base_name} nao declarado', ctx.start.line
+            )
 
         entry = symbol_table.get(base_name)
 
@@ -184,9 +180,7 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
             else:
                 # Se for um ponteiro para registro, verificar o tipo apontado
                 if tipo_atual.startswith('^'):
-                    tipo_atual = tipo_atual[
-                        1:
-                    ]  # Remove o ^ para verificar o tipo apontado
+                    tipo_atual = tipo_atual[1:]  # tratar ponteiro
 
                 # Procurar o tipo do registro na tabela de símbolos
                 registro_table = self.scopes.searchNestedScope(tipo_atual)
@@ -204,10 +198,10 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
                     return field['type']
 
             # Campo não encontrado no registro
-            self.addError(
-                f'identificador {base_name}.{campo_atual} nao declarado', ctx.start.line
+            return self.addError(
+                f'identificador {base_name}.{campo_atual} nao declarado',
+                ctx.start.line
             )
-            return invalid
 
         return entry.type
 
@@ -476,33 +470,35 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
             return 'inteiro'
         elif ctx.NUM_REAL():
             return 'real'
-        elif ctx.IDENT():  # chamada de função
-            func_name = ctx.IDENT().getText()
-            symbol_table = self.scopes.searchNestedScope(func_name)
-
-            if not symbol_table:
-                return self.addError(
-                    f'identificador {func_name} nao declarado', ctx.start.line
-                )
-
-            entry = symbol_table.get(func_name)
-            if entry.kind != 'funcao':
-                return self.addError(
-                    f'identificador {func_name} nao e uma funcao', ctx.start.line
-                )
-
-            if ctx.expressao():
-                # Verificar compatibilidade de argumentos
-                self.verifyArguments(
-                    ctx.expressao(), entry.fields, ctx.start.line, func_name
-                )
-
-            return entry.type
-        elif ctx.expressao():
-            if isinstance(ctx.expressao(), list):
-                return self.visitExpressao(ctx.expressao()[0])
-            return self.visitExpressao(ctx.expressao())
+        elif ctx.IDENT():
+            return self._process_call_function(ctx)
+        elif exp := ctx.expressao():
+            if isinstance(exp, list):
+                exp = exp[0]
+            return self.visitExpressao(exp)
         return invalid
+
+    def _process_call_function(self, ctx):
+        func_name = ctx.IDENT().getText()
+        symbol_table = self.scopes.searchNestedScope(func_name)
+
+        if not symbol_table:
+            return self.addError(
+                f'identificador {func_name} nao declarado', ctx.start.line
+            )
+
+        entry = symbol_table.get(func_name)
+        if entry.kind != 'funcao':
+            return self.addError(
+                f'identificador {func_name} nao e uma funcao', ctx.start.line
+            )
+
+        if ctx.expressao():  # Porque aqui chama exp dnv?
+            # Verificar compatibilidade de argumentos
+            self.verifyArguments(
+                ctx.expressao(), entry.fields, ctx.start.line, func_name
+            )
+        return entry.type
 
     def visitParcela_nao_unario(self, ctx):
         if DEBUG:
@@ -514,10 +510,13 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
         return invalid
 
     def checkCompatible(self, tipo_destino, tipo_origem):
+        """Verifica se a atribuição é compatível conforme as regras especificadas"""
         if DEBUG:
             print(f'Verificando compatibilidade: {tipo_destino} <- {tipo_origem}')
-        """Verifica se a atribuição é compatível conforme as regras especificadas"""
+
         # Se algum dos tipos for inválido, a atribuição não é possível
+        is_valid = False
+
         if invalid in {tipo_destino, tipo_origem}:
             return False
 
@@ -526,28 +525,27 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
             # Verificar se os tipos apontados são compatíveis
             tipo_apontado_destino = tipo_destino[1:]
             tipo_apontado_origem = tipo_origem[1:]
-            return tipo_apontado_destino == tipo_apontado_origem
+            is_valid = tipo_apontado_destino == tipo_apontado_origem
 
         # Caso 2: (real | inteiro) ← (real | inteiro)
         if tipo_destino in {'real', 'inteiro'} and tipo_origem in {'real', 'inteiro'}:
-            return True
+            is_valid = True
 
         # Caso 3: literal ← literal
         if tipo_destino == 'literal' and tipo_origem == 'literal':
-            return True
+            is_valid = True
 
         # Caso 4: logico ← logico
         if tipo_destino == 'logico' and tipo_origem == 'logico':
-            return True
+            is_valid = True
 
         # Caso 5: registro ← registro (mesmo nome)
         if tipo_destino == tipo_origem:
             scope_dest = self.scopes.searchNestedScope(tipo_destino)
             if scope_dest and scope_dest.get(tipo_destino):
-                return True
+                is_valid = True
 
-        # Se não se encaixa em nenhum caso, não é compatível
-        return False
+        return is_valid
 
     @staticmethod
     def getResultingType(tipo1, tipo2, operador):
