@@ -52,7 +52,9 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
     def addEntry(self, name, type, kind, line, fields=None):
         """Adiciona uma entrada na tabela de símbolos"""
         if self.scopes.searchNestedScope(name) == self.scopes.currentScope():
-            self.addError(f'identificador {name} ja declarado anteriormente', line)
+            self.addError(
+                f'identificador {name} ja declarado anteriormente', line
+            )
             return invalid
         entry = SymbolEntry(
             name=name, type=type, kind=kind, line=line, fields=fields or []
@@ -77,8 +79,12 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
         elif ctx.TIPO():  # TIPO IDENT DOIS_PONTOS tipo
             name = ctx.IDENT().getText()
             if ctx.tipo().registro():
-                fields = self.extractFields(ctx.tipo().registro(), ctx.start.line)
-                return self.addEntry(name, name, 'tipo', ctx.start.line, fields)
+                fields = self.extractFields(
+                    ctx.tipo().registro(), ctx.start.line
+                )
+                return self.addEntry(
+                    name, name, 'tipo', ctx.start.line, fields
+                )
             else:
                 tipo_texto = self.processTipo(ctx.tipo(), ctx.start.line)
                 return self.addEntry(name, tipo_texto, 'tipo', ctx.start.line)
@@ -92,7 +98,8 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
 
         if self.scopes.searchNestedScope(name) == self.scopes.currentScope():
             return self.addError(
-                f'identificador {name} ja declarado anteriormente', ctx.start.line
+                f'identificador {name} ja declarado anteriormente',
+                ctx.start.line
             )
 
         # Criar novo escopo para os parâmetros
@@ -116,7 +123,11 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
             tipo = 'void'
 
         self.scopes.tablesList[-2].symbols[name] = SymbolEntry(
-            name=name, type=tipo, kind=kind, line=ctx.start.line, fields=params_info
+            name=name,
+            type=tipo,
+            kind=kind,
+            line=ctx.start.line,
+            fields=params_info
         )
 
         # Processar corpo
@@ -142,7 +153,9 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
         for id_ctx in identifiers:
             name = id_ctx.IDENT(0).getText()
             if tipo == 'registro':
-                fields = self.extractFields(tipo_ctx.registro(), ctx.start.line)
+                fields = self.extractFields(
+                    tipo_ctx.registro(), ctx.start.line
+                )
                 self.addEntry(name, tipo, 'variavel', ctx.start.line, fields)
             else:
                 self.addEntry(name, tipo, 'variavel', id_ctx.start.line)
@@ -192,7 +205,8 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
 
             # Campo não encontrado no registro
             return self.addError(
-                f'identificador {base_name}.{campo_atual} nao declarado', ctx.start.line
+                f'identificador {base_name}.{campo_atual} nao declarado',
+                ctx.start.line
             )
 
         return entry.type
@@ -209,7 +223,9 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
                 name = id_ctx.IDENT(0).getText()
                 kind = 'var_param' if is_var else 'param'
                 self.addEntry(name, tipo, kind, id_ctx.start.line)
-                params_info.append({'name': name, 'type': tipo, 'is_var': is_var})
+                params_info.append(
+                    {'name': name, 'type': tipo, 'is_var': is_var}
+                )
 
         return params_info
 
@@ -240,7 +256,8 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
         proc_entry = symbol_table.get(proc_name)
         if proc_entry.kind != 'procedimento':
             return self.addError(
-                f'identificador {proc_name} nao e um procedimento', ctx.start.line
+                f'identificador {proc_name} nao e um procedimento',
+                ctx.start.line
             )
 
         # Verificar compatibilidade de argumentos
@@ -265,7 +282,9 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
             var_name = ctx.identificador().getText()
             if id_type.startswith('^'):
                 var_name = '^' + var_name
-            self.addError(f'atribuicao nao compativel para {var_name}', ctx.start.line)
+            self.addError(
+                f'atribuicao nao compativel para {var_name}', ctx.start.line
+            )
         return None
 
     def visitCmdRetorne(self, ctx):
@@ -294,7 +313,8 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
         # Verificar compatibilidade do tipo retornado com o tipo da função
         if not self.checkCompatible(func_entry.type, exp_type):
             return self.addError(
-                f'incompatibilidade de tipos no retorno de {self.current_function}',
+                'incompatibilidade de tipos no retorno '
+                f'de {self.current_function}',
                 ctx.start.line,
             )
 
@@ -365,7 +385,10 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
             return invalid
 
         if ctx.op_relacional().getText() in {'>', '<', '>=', '<='}:
-            if (tipo1 not in {'inteiro', 'real'}) or (tipo2 not in {'inteiro', 'real'}):
+            if (
+                (tipo1 not in {'inteiro', 'real'})
+                or (tipo2 not in {'inteiro', 'real'})
+            ):
                 return invalid
         elif ctx.op_relacional().getText() in {'=', '<>'}:
             if not (
@@ -393,7 +416,9 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
             tipo_atual = self.visitTermo(termos[i])
             op = ctx.op1(i - 1).getText()
 
-            tipo_resultante = self.getResultingType(tipo_resultante, tipo_atual, op)
+            tipo_resultante = self.getResultingType(
+                tipo_resultante, tipo_atual, op
+            )
             if tipo_resultante == invalid:
                 break
         return tipo_resultante
@@ -502,9 +527,11 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
         return invalid
 
     def checkCompatible(self, tipo_destino, tipo_origem):
-        """Verifica se a atribuição é compatível conforme as regras especificadas"""
+        """Verifica se a atribuição é compatível as regras especificadas"""
         if DEBUG:
-            print(f'Verificando compatibilidade: {tipo_destino} <- {tipo_origem}')
+            print(
+                f'Verificando compatibilidade: {tipo_destino} <- {tipo_origem}'
+            )
 
         # Se algum dos tipos for inválido, a atribuição não é possível
         is_valid = False
@@ -520,7 +547,10 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
             is_valid = tipo_apontado_destino == tipo_apontado_origem
 
         # Caso 2: (real | inteiro) ← (real | inteiro)
-        if tipo_destino in {'real', 'inteiro'} and tipo_origem in {'real', 'inteiro'}:
+        if (
+            tipo_destino in {'real', 'inteiro'}
+            and tipo_origem in {'real', 'inteiro'}
+        ):
             is_valid = True
 
         # Caso 3: literal ← literal
@@ -600,15 +630,18 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
 
         return tipo
 
-    def verifyArguments(self, expressoes_ctx, params_formais, line, nome_subprograma):
-        """Verifica se os argumentos são compatíveis com os parâmetros formais"""
+    def verifyArguments(
+        self, expressoes_ctx, params_formais, line, nome_subprograma
+    ):
+        """Verifica se os argumentos são compatíveis com os parâmetros"""
         if expressoes_ctx is None:
             expressoes_ctx = []
 
         # Verificar número de argumentos
         if len(expressoes_ctx) != len(params_formais):
             return self.addError(
-                f'incompatibilidade de parametros na chamada de {nome_subprograma}',
+                'incompatibilidade de parametros na chamada de '
+                f'{nome_subprograma}',
                 line,
             )
 
@@ -619,7 +652,8 @@ class LangAlgSemantic(LangAlgVisitor):  # noqa PLR0904
 
             if param_tipo != arg_tipo:
                 return self.addError(
-                    f'incompatibilidade de parametros na chamada de {nome_subprograma}',
+                    'incompatibilidade de parametros na chamada de '
+                    f'{nome_subprograma}',
                     line,
                 )
 
