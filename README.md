@@ -109,3 +109,26 @@ java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.ja
 compilador semantical <input_file> <output_file>
 ```
 </details>
+<details>
+    <summary><strong> Gerador de Código </strong></summary>
+
+    - Implementação de um gerador de codigo em C para a linguagem LA.
+    - Ele deve ler um programa-fonte e um codigo compilável para gcc
+#### Como rodar:
+- Entra no ambiente virtual
+```bash
+source .venv/bin/activate
+```
+- Para corrigir o T5 execute o comando corretor automático passando os respectivos diretórios
+```bash
+java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.jar "compilador codegen" gcc temp casos-de-teste "811455, 802534, 811797" t3
+```
+
+- O output será gerado no diretório `temp/`
+
+- Caso queria rodar o CLI normalmente basta rodar
+```bash
+compilador codegen <input_file> <output_file>
+```
+</details>
+

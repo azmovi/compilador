@@ -25,7 +25,7 @@ def syntactical(input_file: str, output_file: str):
     """Analisador sintático"""
     try:
         run_syntactic_analysis(input_file, output_file)
-        console.print('[green]Análise sintática concluída com sucesso![/green]')
+        console.print('[green]Análise sintática concluída com sucesso[/green]')
     except ValueError:
         console.print_exception()
 
@@ -35,7 +35,7 @@ def semantical(input_file: str, output_file: str):
     """Analisador semântico"""
     try:
         run_semantic_analysis(input_file, output_file)
-        console.print('[green]Análise semântica concluída com sucesso![/green]')
+        console.print('[green]Análise semântica concluída com sucesso[/green]')
     except ValueError:
         console.print_exception()
 
@@ -45,6 +45,6 @@ def codegen(input_file: str, output_file: str):
     """Geração de Codigo"""
     try:
         run_code_generation(input_file, output_file)
-        console.print('[green]Criação de código concluída com sucesso![/green]')
+        console.print('[green]Criação de código concluída com sucesso[/green]')
     except ValueError:
         console.print_exception()
