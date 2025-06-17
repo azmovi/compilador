@@ -59,7 +59,6 @@ compilador lexical <input_file> <output_file>
 ```
 </details>
 
-
 <details>
 <summary><strong> Analisador Sintático </strong></summary>
 
@@ -109,11 +108,12 @@ java -jar compiladores-corretor-automatico-1.0-SNAPSHOT-jar-with-dependencies.ja
 compilador semantical <input_file> <output_file>
 ```
 </details>
+
 <details>
     <summary><strong> Gerador de Código </strong></summary>
 
-    - Implementação de um gerador de codigo em C para a linguagem LA.
-    - Ele deve ler um programa-fonte e um codigo compilável para gcc
+- Implementação de um gerador de codigo em C para a linguagem LA.
+- Ele deve ler um programa-fonte e um codigo compilável para gcc
 #### Como rodar:
 - Entra no ambiente virtual
 ```bash
